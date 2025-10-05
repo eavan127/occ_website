@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+
+{% block title %} signup successful {% endblock %}
+
+{% block body %}
+    {% include 'base/nav-bar.html' %}
+    <div id="wrap">
+        <div id="main">
+            <!-- content goes here -->
+            <div class="container">
+                <div class="row">
+                    <div class="container">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="card">
+                                <div class="card-block">
+                                    <h3 class="card-title col-md-12">Welcome to FOSS@Amrita!</h3>
+                                    <hr>
+                                    <p class="card-text col-md-12">
+                                        Click the button below to login or use the navbar.
+                                    </p>
+                                    <p class="col-md-12">
+                                        <a class="btn btn-primary card-link" href="{% url 'login' %}" role="button">Login</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="alert alert-danger" role="alert">
+                                      <strong>Note!</strong> Your account needs to be verified before you can log in.
+                                        Please contact a senior member of the club to activate your account.
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'base/footer.html' %}
+    <style>
+        .card {
+            margin: 50px 0 30px 0;
+        }
+        .card-text {
+            margin: 20px 0;
+        }
+
+        .btn {
+            margin-right: 10px;
+        }
+    </style>
+
+{% endblock %}

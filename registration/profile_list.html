@@ -1,0 +1,138 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %} Members{% endblock %}
+
+{% block body %}
+    {% include 'base/nav-bar.html' %}
+    <div id="wrap">
+        <div id="main">
+            <!-- content goes here -->
+
+            <div class="container">
+
+                <div class="row">
+
+                    <h1 class="head col-md-9">Club Members</h1>
+                    <div class="form-group col-md-3">
+                        <input onkeyup="myFunction()" type="text" class="form-control" id="search" placeholder="Search">
+                    </div>
+
+                    <div class="card-columns col-md-12">
+
+                        {% for user_info in object_list %}
+                            {% if user_info.user.is_active %}
+                                <div id="{{ user_info.user.first_name }} {{ user_info.user.last_name }}"
+                                     class="items card text-center">
+                                    <div class="card-block">
+                                        <a class="link" href="{% url 'profile' user_info.user.id %}">
+                                            {% if user_info.profile_pic %}
+                                                <img src="/static/media/{{ user_info.profile_pic }}" alt=""
+                                                     class="card-title profile-pic img-fluid rounded-circle">
+                                            {% else %}
+                                                <img src="{% static 'base/image/default-no-profile-pic.jpg' %}" alt=""
+                                                     class="card-title profile-pic img-fluid rounded-circle">
+                                            {% endif %}
+                                        </a>
+                                        <h4 class="card-title"><a class="link" href="{% url 'profile' user_info.user.id %}">
+                                            {{ user_info.user.first_name }} {{ user_info.user.last_name }}
+                                        </a></h4>
+                                        <p class="card-text">{{ user_info.small_intro }}</p>
+                                        <div class="card-text">
+                                            {% if user_info.gitHub %}
+                                                <a class="icon-link" href="{{ user_info.gitHub }}">
+                                                    <img height="25px" src="{% static 'base/icons/github.png' %}">
+                                                </a>
+                                            {% endif %}
+                                            {% if user_info.blog %}
+                                                <a class="icon-link" href="{{ user_info.blog }}">
+                                                    <img height="25px" src="{% static 'base/icons/wordpress.png' %}">
+                                                </a>
+                                            {% endif %}
+                                            {% if user_info.linkedIn %}
+                                                <a class="icon-link" href="{{ user_info.linkedIn }}">
+                                                    <img height="25px" src="{% static 'base/icons/linkedin.png' %}">
+                                                </a>
+                                            {% endif %}
+                                            {% if user_info.googlePlus %}
+                                                <a class="icon-link" href="{{ user_info.googlePlus }}">
+                                                    <img height="25px" src="{% static 'base/icons/google-plus.png' %}">
+                                                </a>
+                                            {% endif %}
+                                            {% if user_info.facebook %}
+                                                <a class="icon-link" href="{{ user_info.facebook }}">
+                                                    <img height="25px" src="{% static 'base/icons/facebook.png' %}">
+                                                </a>
+                                            {% endif %}
+                                            {% if user_info.twitter %}
+                                                <a class="icon-link" href="{{ user_info.twitter }}">
+                                                    <img height="25px" src="{% static 'base/icons/twitter.png' %}">
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'base/footer.html' %}
+    <style>
+        .profile-pic {
+            margin: 50px 0 30px 0;
+            padding: 0 23%;
+        }
+
+        .icon-link {
+            margin: 3px;
+            text-decoration: none !important;
+        }
+
+        .link {
+            text-decoration: none !important;
+            color: black;
+        }
+
+        .card {
+            margin-top: 10px;
+        }
+
+        .container{
+            margin-top: 20px;
+        }
+
+        .head, .form-group {
+
+            margin-bottom: 20px;
+        }
+
+        @media only screen and (max-width: 767px) {
+            .form-group {
+                display: none;
+            }
+        }
+
+
+    </style>
+
+    <script>
+        function myFunction() {
+            // Declare variables
+            var input, filter, items, i;
+            input = document.getElementById('search');
+            filter = input.value.toUpperCase();
+            items = document.getElementsByClassName('items');
+
+            // Loop through all list items, and hide those who don't match the search query
+            for (i = 0; i < items.length; i++) {
+                if (items[i].id.toUpperCase().indexOf(filter) > -1) {
+                    items[i].style.display = "";
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+{% endblock %}

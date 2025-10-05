@@ -1,0 +1,181 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %} {{ object.first_name }} {{ object.last_name }} {% endblock %}
+
+{% block body %}
+    {% include 'base/nav-bar.html' %}
+    <div id="wrap">
+        <div id="main">
+            <!-- content goes here -->
+            <div class="row ctn">
+                <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+                    <div class="card text-center">
+                        <div class="card-block">
+                            {% if user_info.profile_pic %}
+                                <img src="/static/media/{{ user_info.profile_pic }}" alt=""
+                                     class="card-title profile-pic img-fluid rounded-circle">
+                            {% else %}
+                                <img src="{% static 'base/image/default-no-profile-pic.jpg' %}" alt=""
+                                     class="card-title profile-pic img-fluid rounded-circle">
+                            {% endif %}
+                            <h4 class="card-title">{{ user_info.user.first_name }} {{ user_info.user.last_name }}</h4>
+                            <p class="card-text">{{ user_info.small_intro }}</p>
+                            <div class="card-text">
+                                {% if user_info.gitHub %}
+                                    <a class="icon-link" href="{{ user_info.gitHub }}">
+                                        <img height="25px" src="{% static 'base/icons/github.png' %}">
+                                    </a>
+                                {% endif %}
+                                {% if user_info.blog %}
+                                    <a class="icon-link" href="{{ user_info.blog }}">
+                                        <img height="25px" src="{% static 'base/icons/wordpress.png' %}">
+                                    </a>
+                                {% endif %}
+                                {% if user_info.linkedIn %}
+                                    <a class="icon-link" href="{{ user_info.linkedIn }}">
+                                        <img height="25px" src="{% static 'base/icons/linkedin.png' %}">
+                                    </a>
+                                {% endif %}
+                                {% if user_info.googlePlus %}
+                                    <a class="icon-link" href="{{ user_info.googlePlus }}">
+                                        <img height="25px" src="{% static 'base/icons/google-plus.png' %}">
+                                    </a>
+                                {% endif %}
+                                {% if user_info.facebook %}
+                                    <a class="icon-link" href="{{ user_info.facebook }}">
+                                        <img height="25px" src="{% static 'base/icons/facebook.png' %}">
+                                    </a>
+                                {% endif %}
+                                {% if user_info.twitter %}
+                                    <a class="icon-link" href="{{ user_info.twitter }}">
+                                        <img height="25px" src="{% static 'base/icons/twitter.png' %}">
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-7 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="card-block">
+                            <h2 class="card-title col-md-12">
+                                {{ user_info.user.first_name }} {{ user_info.user.last_name }}
+                                <span class="small pull-right">{{ user_info.typing_speed }} wpm</span>
+                            </h2>
+                            <h6 class="card-subtitle col-md-12 mb-2 text-muted">
+                                {% if user_info.is_mentor %}
+                                    Mentor,
+                                {% endif %}
+                                FOSS@Amrita
+                                <span class="small pull-right">{{ user_info.year }}</span>
+                            </h6>
+                            <hr>
+                            <p class="card-text col-md-10">{{ user_info.intro }}</p>
+                            {% if user_info.interests %}
+                                <h4 class="card-title col-md-12">Interests</h4>
+                                <p class="card-text col-md-10">{{ user_info.interests }}</p>
+                            {% endif %}
+                            {% if user_info.expertise %}
+                                <h4 class="card-title col-md-12">Expertise</h4>
+                                <p class="card-text col-md-10">{{ user_info.expertise }}</p>
+                            {% endif %}
+                            <div class="col-md-12 card-link">
+                                {% ifequal request.user user_info.user %}
+                                <a href="{% url 'update_profile' user_info.user.id %}"
+                                   class="btn btn-secondary">
+                                    Update profile
+                                </a>
+
+                                <a href="/accounts/password_change"
+                                   class="btn btn-secondary">
+                                    Change password
+                                </a>
+
+
+                                {% endifequal %}
+
+                                {% if user_info.resume %}
+                                    <a href="/static/media/{{ user_info.resume }}"
+                                       class="btn btn-secondary">
+                                        Resume
+                                    </a>
+                                {% endif %}
+                                {% if request.user.is_authenticated %}
+                                    <p class="text-muted pull-right">System no: {{ user_info.system_number }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                    {% if teams %}
+                        <div class="card">
+                            <div class="card-block">
+
+                                <h4 class="card-title">Teams</h4>
+                                <hr>
+                                {% for team in teams %}
+                                    <a class="link" href="{% url 'team_detail' team.id %}">
+                                        <p class="card-text>">{{ team.name }}</p>
+                                    </a>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if projects %}
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">Projects</h4>
+                                <hr>
+                                {% for project in projects %}
+                                    <a class="link" href="{% url 'project_detail' project.id %}">
+                                        <p class="card-text>">{{ project.title }}</p>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    {% include 'base/footer.html' %}
+    <style>
+        .card {
+            margin-top: 20px;
+        }
+
+        .ctn {
+            margin: 50px 7%;
+        }
+
+        .profile-pic {
+            margin: 50px 0 30px 0;
+            padding: 0 20%;
+
+        }
+
+        .link {
+            text-decoration: none !important;
+            color: black;
+        }
+
+        .icon-link {
+            margin: 3px;
+            text-decoration: none !important;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .ctn {
+                margin: 30px 0;
+            }
+        }
+
+    </style>
+{% endblock %}
+
